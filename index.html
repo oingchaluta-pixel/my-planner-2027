@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7dce8">
+<title>My Planner 2027 ♡</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--pink:#f4cddd;--rose:#c66d91;--cream:#fffaf5;--lav:#e9e2f7;--mint:#dcefe5;--ink:#51464b;--muted:#92848a;--line:#f0e5e8}
+*{box-sizing:border-box}body{margin:0;background:#fff8fa;color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans Thai",sans-serif;padding-bottom:82px}
+header{padding:20px 18px 14px;background:linear-gradient(135deg,#f8dce8,#f6e9f1);border-radius:0 0 26px 26px}
+h1{font-size:22px;margin:0 0 4px} .sub{font-size:12px;color:#8f6879}
+main{max-width:720px;margin:auto;padding:14px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 3px calc(8px + env(safe-area-inset-bottom));z-index:5}
+nav button{border:0;background:none;color:#9c8c92;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 8px}
+nav button b{font-size:20px}nav button.active{color:var(--rose);font-weight:700}
+.card{background:white;border:1px solid var(--line);border-radius:18px;padding:14px;margin:10px 0;box-shadow:0 4px 14px #d9b9c21a}
+.row{display:flex;gap:9px;align-items:center}.between{justify-content:space-between}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.metric{background:#fff7fa;border-radius:15px;padding:12px}.metric small{color:var(--muted);display:block}.metric strong{font-size:19px}
+h2{font-size:17px;margin:6px 0 10px}h3{font-size:14px;margin:0 0 8px}
+button,.btn{cursor:pointer;border:0;border-radius:12px;padding:10px 13px;background:#f3d8e4;color:#684d59;font-weight:600;font-size:13px}
+button.primary{background:var(--rose);color:white}.btnline{background:#fff;border:1px solid var(--line)}
+input,select,textarea{width:100%;border:1px solid #eadde2;border-radius:11px;padding:11px;background:#fff;font:inherit;color:var(--ink);margin:4px 0 9px}
+label{font-size:12px;color:var(--muted)}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.item{display:flex;align-items:center;gap:9px;padding:10px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}
+.item .grow{flex:1;min-width:0}.item small{display:block;color:var(--muted);font-size:11px}
+.pill{font-size:10px;padding:4px 8px;border-radius:20px;background:#f5eaf0}
+.months{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:11px}
+.day{padding:7px 0;border-radius:9px}.today{background:var(--rose);color:white}.muted{color:#c5b9be}
+.barwrap{height:150px;display:flex;align-items:end;gap:5px;padding:10px 0 0;border-bottom:1px solid var(--line)}
+.barcol{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;height:100%;gap:4px;font-size:9px;color:var(--muted)}
+.bars{height:115px;width:100%;display:flex;align-items:end;justify-content:center;gap:3px}
+.bar{width:42%;border-radius:5px 5px 0 0;min-height:2px;background:#e9b8ce}.bar.exp{background:#c8b9e8}.bar.save{background:#acd9c3}
+.legend{display:flex;gap:12px;font-size:11px;color:var(--muted);margin-top:8px}
+.hidden{display:none!important}.empty{color:var(--muted);font-size:13px;text-align:center;padding:18px}
+small.note{color:var(--muted);font-size:11px}
+</style>
+</head>
+<body>
+<header><div class="row between"><div><h1>My Planner 2027 ♡</h1><div class="sub">วางแผนวันดี ๆ และดูแลการเงินของเรา</div></div><div style="font-size:28px">🌷</div></div></header>
+<main>
+<section id="home">
+ <div class="card"><div class="row between"><div><small id="todayLabel"></small><h2 id="todayDate"></h2></div><span class="pill">ปี 2027</span></div><div class="row between"><button class="btnline" id="prevMonth">‹</button><b id="monthTitle"></b><button class="btnline" id="nextMonth">›</button></div><div class="months" id="calendar" style="margin-top:10px"></div></div>
+ <div class="grid">
+  <div class="metric"><small>รายรับเดือนนี้</small><strong id="homeIncome">฿0</strong></div>
+  <div class="metric"><small>รายจ่ายเดือนนี้</small><strong id="homeExpense">฿0</strong></div>
+  <div class="metric"><small>เงินออมเดือนนี้</small><strong id="homeSaving">฿0</strong></div>
+  <div class="metric"><small>คงเหลือเดือนนี้</small><strong id="homeBalance">฿0</strong></div>
+ </div>
+ <div class="card"><div class="row between"><h2>งานที่ต้องทำวันนี้ ✨</h2><button onclick="showTab('todo')">ดูทั้งหมด</button></div><div id="todayTasks"></div></div>
+ <div class="row"><button class="primary" style="flex:1" onclick="quickAdd('income')">＋ รายรับ</button><button style="flex:1" onclick="quickAdd('expense')">－ รายจ่าย</button><button style="flex:1" onclick="showTab('todo')">＋ งานใหม่</button></div>
+</section>
+<section id="todo" class="hidden">
+ <h2>✅ To-do List</h2>
+ <div class="card"><h3 id="taskFormTitle">เพิ่มงานใหม่</h3><input id="taskName" placeholder="ชื่องานที่ต้องทำ"><div class="formgrid"><div><label>วันที่</label><input id="taskDate" type="date"></div><div><label>เวลา</label><input id="taskTime" type="time"></div><div><label>หมวดหมู่</label><select id="taskCat"><option>ส่วนตัว</option><option>งาน</option><option>บ้าน</option><option>การเงิน</option><option>สุขภาพ</option><option>อื่น ๆ</option></select></div><div><label>ความสำคัญ</label><select id="taskPriority"><option>ปกติ</option><option>สูง</option><option>ต่ำ</option></select></div></div><button class="primary" onclick="saveTask()">บันทึกงาน</button><button class="btnline" onclick="resetTaskForm()">ล้าง</button></div>
+ <div class="card"><div class="row between"><h3>รายการงาน</h3><select id="taskFilter" style="width:auto;margin:0" onchange="renderTasks()"><option value="all">ทั้งหมด</option><option value="open">ยังไม่เสร็จ</option><option value="done">เสร็จแล้ว</option></select></div><div id="taskList"></div></div>
+</section>
+<section id="finance" class="hidden">
+ <h2>💰 My Finance</h2>
+ <div class="card"><h3>บันทึกรายการ</h3><div class="formgrid"><div><label>ประเภท</label><select id="finType"><option value="income">รายรับ</option><option value="expense">รายจ่าย</option><option value="saving">เงินออม</option></select></div><div><label>วันที่</label><input type="date" id="finDate"></div></div><label>รายละเอียด</label><input id="finName" placeholder="เช่น เงินเดือน / ค่าอาหาร"><div class="formgrid"><div><label>จำนวนเงิน (บาท)</label><input id="finAmount" type="number" min="0" step="0.01" placeholder="0"></div><div><label>หมวดหมู่</label><select id="finCat"><option>เงินเดือน</option><option>อาหาร</option><option>เดินทาง</option><option>ที่พัก/บิล</option><option>ช้อปปิ้ง</option><option>สุขภาพ</option><option>เงินออม</option><option>อื่น ๆ</option></select></div></div><button class="primary" onclick="addFinance()">บันทึกรายการ</button></div>
+ <div class="card"><h3>เป้าหมายการออม ♡</h3><label>ชื่อเป้าหมาย</label><input id="goalName" placeholder="เช่น เงินสำรองฉุกเฉิน"><div class="formgrid"><div><label>ยอดเป้าหมาย (บาท)</label><input id="goalTarget" type="number" placeholder="0"></div><div><label>ยอดออมปัจจุบัน (บาท)</label><input id="goalCurrent" type="number" placeholder="0"></div></div><button onclick="saveGoal()">บันทึกเป้าหมาย</button><div id="goalProgress"></div></div>
+ <div class="card"><div class="row between"><h3>ประวัติรายการ</h3><select id="finMonthFilter" style="width:auto;margin:0" onchange="renderFinance()"><option value="all">ทุกเดือน</option></select></div><div id="financeList"></div></div>
+</section>
+<section id="annual" class="hidden">
+ <h2>📊 Annual Summary</h2>
+ <div class="grid"><div class="metric"><small>รายรับรวมทั้งปี</small><strong id="yearIncome">฿0</strong></div><div class="metric"><small>รายจ่ายรวมทั้งปี</small><strong id="yearExpense">฿0</strong></div><div class="metric"><small>เงินออมสะสม</small><strong id="yearSaving">฿0</strong></div><div class="metric"><small>เดือนใช้จ่ายสูงสุด</small><strong id="topMonth" style="font-size:15px">-</strong></div></div>
+ <div class="card"><h3>รายรับและรายจ่ายรายเดือน</h3><div class="barwrap" id="annualBars"></div><div class="legend"><span>🩷 รายรับ</span><span>💜 รายจ่าย</span></div></div>
+ <div class="card"><h3>เงินออมรายเดือน</h3><div class="barwrap" id="savingBars"></div><div class="legend"><span>🌿 เงินออม</span></div></div>
+ <div class="card"><h3>ข้อมูลของฉัน</h3><p class="note">ข้อมูลถูกเก็บไว้ในเบราว์เซอร์ของโทรศัพท์เครื่องนี้</p><button onclick="exportData()">สำรองข้อมูล</button><label class="btn" style="display:inline-block">นำเข้าข้อมูล<input type="file" accept="application/json" onchange="importData(event)" style="display:none"></label></div>
+</section>
+</main>
+<nav><button class="active" data-tab="home" onclick="showTab('home')"><b>🏠</b>Home</button><button data-tab="todo" onclick="showTab('todo')"><b>✅</b>To-do</button><button data-tab="finance" onclick="showTab('finance')"><b>💰</b>Finance</button><button data-tab="annual" onclick="showTab('annual')"><b>📊</b>Summary</button></nav>
+<script>
+const KEY='myPlanner2027Data';
+let db=JSON.parse(localStorage.getItem(KEY)||'{"tasks":[],"finance":[],"goal":null}');
+let calYear=2027,calMonth=0,editTaskId=null;
+const todayISO=()=>{let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const money=n=>'฿'+Number(n||0).toLocaleString('th-TH',{maximumFractionDigits:2});
+const save=()=>localStorage.setItem(KEY,JSON.stringify(db));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const monthNames=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+function showTab(t){document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));document.getElementById(t).classList.remove('hidden');document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));refresh()}
+function sums(month=null){let f=db.finance.filter(x=>month===null||x.date?.slice(0,7)===month);return {income:f.filter(x=>x.type==='income').reduce((a,x)=>a+x.amount,0),expense:f.filter(x=>x.type==='expense').reduce((a,x)=>a+x.amount,0),saving:f.filter(x=>x.type==='saving').reduce((a,x)=>a+x.amount,0)}}
+function renderCalendar(){let first=new Date(calYear,calMonth,1).getDay(),days=new Date(calYear,calMonth+1,0).getDate();document.getElementById('monthTitle').textContent=monthNames[calMonth]+' '+calYear;let h=['อา','จ','อ','พ','พฤ','ศ','ส'].map(x=>`<div>${x}</div>`).join('');for(let i=0;i<first;i++)h+='<div></div>';for(let d=1;d<=days;d++){let iso=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;h+=`<div class="day ${iso===todayISO()?'today':''}" onclick="selectDate('${iso}')">${d}</div>`}document.getElementById('calendar').innerHTML=h}
+function selectDate(d){showTab('todo');document.getElementById('taskDate').value=d;renderTasks()}
+function renderHome(){let d=new Date(),m=todayISO().slice(0,7),s=sums(m);document.getElementById('todayLabel').textContent=d.toLocaleDateString('th-TH',{weekday:'long'});document.getElementById('todayDate').textContent=d.toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'});document.getElementById('homeIncome').textContent=money(s.income);document.getElementById('homeExpense').textContent=money(s.expense);document.getElementById('homeSaving').textContent=money(s.saving);document.getElementById('homeBalance').textContent=money(s.income-s.expense-s.saving);let tasks=db.tasks.filter(t=>t.date===todayISO()&&!t.done);document.getElementById('todayTasks').innerHTML=tasks.length?tasks.map(t=>`<div class="item"><span>○</span><div class="grow">${esc(t.name)}<small>${esc(t.time||'ไม่ระบุเวลา')} · ${esc(t.cat)}</small></div></div>`).join(''):'<div class="empty">วันนี้ยังไม่มีงานที่ต้องทำ 🌸</div>';renderCalendar()}
+function saveTask(){let name=document.getElementById('taskName').value.trim();if(!name)return alert('กรุณาใส่ชื่องาน');let t={id:editTaskId||Date.now(),name,date:document.getElementById('taskDate').value||todayISO(),time:document.getElementById('taskTime').value,cat:document.getElementById('taskCat').value,priority:document.getElementById('taskPriority').value,done:false};if(editTaskId){let old=db.tasks.find(x=>x.id===editTaskId);t.done=old?.done||false;db.tasks=db.tasks.map(x=>x.id===editTaskId?t:x)}else db.tasks.push(t);save();resetTaskForm();renderTasks();renderHome()}
+function resetTaskForm(){editTaskId=null;document.getElementById('taskFormTitle').textContent='เพิ่มงานใหม่';document.getElementById('taskName').value='';document.getElementById('taskDate').value=todayISO();document.getElementById('taskTime').value=''}
+function renderTasks(){let f=document.getElementById('taskFilter').value;let arr=[...db.tasks].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)).filter(t=>f==='all'||(f==='done'?t.done:!t.done));document.getElementById('taskList').innerHTML=arr.length?arr.map(t=>`<div class="item"><input type="checkbox" style="width:auto;margin:0" ${t.done?'checked':''} onchange="toggleTask(${t.id})"><div class="grow" style="${t.done?'text-decoration:line-through;opacity:.5':''}">${esc(t.name)}<small>${esc(t.date)} ${esc(t.time||'')} · ${esc(t.cat)} · สำคัญ${esc(t.priority)}</small></div><button class="btnline" onclick="editTask(${t.id})">แก้ไข</button><button class="btnline" onclick="deleteTask(${t.id})">ลบ</button></div>`).join(''):'<div class="empty">ยังไม่มีรายการงาน</div>'}
+function toggleTask(id){let t=db.tasks.find(x=>x.id===id);if(t)t.done=!t.done;save();renderTasks();renderHome()}
+function editTask(id){let t=db.tasks.find(x=>x.id===id);if(!t)return;editTaskId=id;document.getElementById('taskFormTitle').textContent='แก้ไขงาน';document.getElementById('taskName').value=t.name;document.getElementById('taskDate').value=t.date;document.getElementById('taskTime').value=t.time;document.getElementById('taskCat').value=t.cat;document.getElementById('taskPriority').value=t.priority;window.scrollTo(0,0)}
+function deleteTask(id){if(confirm('ลบงานนี้หรือไม่?')){db.tasks=db.tasks.filter(x=>x.id!==id);save();renderTasks();renderHome()}}
+function addFinance(){let amount=Number(document.getElementById('finAmount').value);if(!amount||amount<0)return alert('กรุณาระบุจำนวนเงิน');let x={id:Date.now(),type:document.getElementById('finType').value,date:document.getElementById('finDate').value||todayISO(),name:document.getElementById('finName').value.trim()||'ไม่ระบุรายละเอียด',amount,cat:document.getElementById('finCat').value};db.finance.push(x);save();document.getElementById('finName').value='';document.getElementById('finAmount').value='';renderFinance();refresh()}
+function quickAdd(type){showTab('finance');document.getElementById('finType').value=type;document.getElementById('finDate').value=todayISO();document.getElementById('finName').focus()}
+function renderFinance(){let sel=document.getElementById('finMonthFilter'),v=sel.value;let months=[...new Set(db.finance.map(x=>x.date.slice(0,7)))].sort().reverse();sel.innerHTML='<option value="all">ทุกเดือน</option>'+months.map(m=>`<option value="${m}">${m}</option>`).join('');sel.value=months.includes(v)?v:'all';let arr=[...db.finance].filter(x=>sel.value==='all'||x.date.startsWith(sel.value)).sort((a,b)=>b.date.localeCompare(a.date));document.getElementById('financeList').innerHTML=arr.length?arr.map(x=>`<div class="item"><div class="grow">${esc(x.name)}<small>${esc(x.date)} · ${esc(x.cat)} · ${x.type==='income'?'รายรับ':x.type==='expense'?'รายจ่าย':'เงินออม'}</small></div><b style="color:${x.type==='income'?'#4c9b79':x.type==='expense'?'#bd6d83':'#719c82'}">${x.type==='expense'?'-': '+'}${money(x.amount)}</b><button class="btnline" onclick="deleteFinance(${x.id})">ลบ</button></div>`).join(''):'<div class="empty">ยังไม่มีรายการการเงิน</div>';let g=db.goal;document.getElementById('goalProgress').innerHTML=g?`<p>${esc(g.name)}: ${money(g.current)} / ${money(g.target)}</p><progress value="${Math.min(g.current,g.target)}" max="${g.target||1}" style="width:100%"></progress>`:''}
+function deleteFinance(id){if(confirm('ลบรายการนี้หรือไม่?')){db.finance=db.finance.filter(x=>x.id!==id);save();refresh()}}
+function saveGoal(){let name=document.getElementById('goalName').value.trim(),target=Number(document.getElementById('goalTarget').value),current=Number(document.getElementById('goalCurrent').value);if(!name||target<=0)return alert('กรุณากรอกชื่อและยอดเป้าหมาย');db.goal={name,target,current};save();renderFinance()}
+function renderAnnual(){let vals=Array.from({length:12},(_,i)=>sums(`2027-${String(i+1).padStart(2,'0')}`));let inc=vals.reduce((a,x)=>a+x.income,0),exp=vals.reduce((a,x)=>a+x.expense,0),sav=vals.reduce((a,x)=>a+x.saving,0);document.getElementById('yearIncome').textContent=money(inc);document.getElementById('yearExpense').textContent=money(exp);document.getElementById('yearSaving').textContent=money(sav);let max=Math.max(...vals.map(x=>x.expense));document.getElementById('topMonth').textContent=max?monthNames[vals.findIndex(x=>x.expense===max)]:'-';let scale=Math.max(1,...vals.flatMap(x=>[x.income,x.expense]));document.getElementById('annualBars').innerHTML=vals.map((x,i)=>`<div class="barcol"><div class="bars"><div class="bar" style="height:${x.income/scale*100}%"></div><div class="bar exp" style="height:${x.expense/scale*100}%"></div></div>${i+1}</div>`).join('');let sm=Math.max(1,...vals.map(x=>x.saving));document.getElementById('savingBars').innerHTML=vals.map((x,i)=>`<div class="barcol"><div class="bars"><div class="bar save" style="height:${x.saving/sm*100}%"></div></div>${i+1}</div>`).join('')}
+function exportData(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='my-planner-2027-backup.json';a.click();URL.revokeObjectURL(a.href)}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!Array.isArray(x.tasks)||!Array.isArray(x.finance))throw 0;db=x;save();refresh();alert('นำเข้าข้อมูลแล้ว')}catch(_){alert('ไฟล์ไม่ถูกต้อง')}};r.readAsText(f)}
+function refresh(){renderHome();renderTasks();renderFinance();renderAnnual()}
+document.getElementById('prevMonth').onclick=()=>{calMonth--;if(calMonth<0){calMonth=11;calYear--}renderCalendar()};document.getElementById('nextMonth').onclick=()=>{calMonth++;if(calMonth>11){calMonth=0;calYear++}renderCalendar()};
+document.getElementById('taskDate').value=todayISO();document.getElementById('finDate').value=todayISO();resetTaskForm();refresh();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>

@@ -1,0 +1,10 @@
+{
+  "name": "My Planner 2027",
+  "short_name": "Planner 2027",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff8fa",
+  "theme_color": "#f7dce8",
+  "lang": "th",
+  "description": "แพลนเนอร์และบันทึกการเงินส่วนตัว ปี 2027"
+}
